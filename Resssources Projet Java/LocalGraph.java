@@ -13,12 +13,16 @@ public class LocalGraph extends JFrame{
     private JTextArea login_DBt= new JTextArea();
     private JTextArea password_DBt= new JTextArea();
 
+    private JLabel message1=new JLabel();
+
     private JButton valider = new JButton();
     private JLabel fauxtruc= new JLabel();
 
    private String nom_BDs;
     private String login_BDs;
     private String password_BDS;
+
+    static RequetteSQL requSQL;
 
     Connexion conxLocal;
 
@@ -55,6 +59,13 @@ public class LocalGraph extends JFrame{
         valider.setSize(100,25);
         valider.setLocation(500,500);
 
+        message1.setText("");
+        message1.setSize(100,25);
+        message1.setLocation(0,500);
+
+        //Test_ConnexLocal();
+
+
     }
 
     public JPanel affichLocal(){
@@ -66,10 +77,10 @@ public class LocalGraph extends JFrame{
         this.add(password_DB);
         this.add(password_DBt);
         this.add(valider);
-
+        this.add(message1);
         this.add(fauxtruc);
         fauxtruc.setVisible(false);
-
+        Test_ConnexLocal();
 
         this.setVisible(true);
 
@@ -79,6 +90,7 @@ public class LocalGraph extends JFrame{
     public void Test_ConnexLocal(){
 
         //Utiliser l'action du boutton valider
+
         valider.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,8 +101,17 @@ public class LocalGraph extends JFrame{
 
                 try {
                     conxLocal= new Connexion(nom_BDs,login_BDs,password_BDS);
+
                 } catch (Exception ex) {
+
                     System.out.println(ex.getMessage());
+                    message1.setText(ex.getMessage());
+                    pan.add(message1);
+                    pan.add(fauxtruc);
+                    //fauxtruc.setVisible(false);
+                   pan.setVisible(true);
+
+
                 }
 
             }

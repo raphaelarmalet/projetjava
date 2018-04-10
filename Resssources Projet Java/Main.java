@@ -1,8 +1,11 @@
+import javax.swing.*;
 import java.io.File;
 import java.sql.SQLException;
 
 
-public class Main {
+public class Main extends JFrame {
+
+
     private String userECE;
     private String passwECE;
     private String userData;
@@ -14,44 +17,44 @@ public class Main {
     private String passwdatab;
 
 
-   static ModeConsole console;
-   static ModeGraphique graph;
+    static ModeConsole console;
+    static ModeGraphique graph;
 
-  static  Connexion ece;
-  static Connexion datab;
+    static Connexion ece;
+    static Connexion datab;
 
-  static SSHGraph obsshgraph;
+    static SSHGraph obsshgraph;
+
+    static Diagramme diagra;
+
+    static RequetteSQL requSQL;
 
 
+    public void validerECE() {
 
+        System.out.println("Entrez votre useraname ECE");
+        userECE = console.toString();
 
+        System.out.println("Entrez votre password ECE");
+        passwECE = console.toString();
 
+        System.out.println("Entrez votre useraname DataBase");
+        userData = console.toString();
 
-
-    public void validerECE(){
-
-    System.out.println("Entrez votre useraname ECE");
-    userECE = console.toString();
-
-    System.out.println("Entrez votre password ECE");
-    passwECE = console.toString();
-
-    System.out.println("Entrez votre useraname DataBase");
-    userData = console.toString();
-
-    System.out.println("Entrez votre password Database");
-    passwData = console.toString();
+        System.out.println("Entrez votre password Database");
+        passwData = console.toString();
 
         try {
-            ece = new Connexion(userECE,passwECE,userData,passwData);
-           // ece.affichBDD();
+            ece = new Connexion(userECE, passwECE, userData, passwData);
+            // ece.affichBDD();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
 
 
     }
-    public void validerDatabase()  {
+
+    public void validerDatabase() {
         System.out.println("Entrez nom DataBase");
         nomdatab = console.toString();
 
@@ -63,11 +66,16 @@ public class Main {
 
 
         try {
-            datab= new Connexion(nomdatab,logindatab,passwdatab);
-            datab.affichBDD();
+            datab = new Connexion(nomdatab, logindatab, passwdatab);
+
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+
+        //datab.affichBDD();
+       // datab.affichDiag();
+        //diagra = new Diagramme();
+        datab.PatientMutuelMAAF();
 
 
     }
@@ -75,20 +83,29 @@ public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
 
-         Main object =new Main();  // object du main
+        Main object = new Main();  // object du main
+
 
         console = new ModeConsole(); //  instancier la console
-        graph =new ModeGraphique();//instancier le mode graphique
+        graph = new ModeGraphique();//instancier le mode graphique
         obsshgraph = new SSHGraph();
+        requSQL = new RequetteSQL();
 
 
-        graph.afficheMenu(); // aficher mode graphique
+
+
+
+       graph.afficheMenu(); // aficher mode graphique
         graph.SSHacces();
         graph.Localaccess();
-      //  ece.affichBDD();
 
 
 
+       // requSQL.affichage();
+      //  requSQL.Patientmutuelacces();
+
+
+        // ece.affichBDD();
 
 
         char choix = console.menu();
@@ -97,7 +114,7 @@ public class Main {
             case '1':
 
 
-                    object.validerDatabase();
+                object.validerDatabase();
 
                 break;
             case '2':

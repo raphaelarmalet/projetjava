@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 
 /**
- *
  * @author segado
  */
 public class ModeConsole {
@@ -33,7 +32,7 @@ public class ModeConsole {
 
         String choix;
         System.out.println("1 Connexion DATABASE");
-         System.out.println("2 Connexion ECE");
+        System.out.println("2 Connexion ECE");
         System.out.println("0 Quitter");
 
         Scanner sc = new Scanner(System.in);
@@ -42,7 +41,6 @@ public class ModeConsole {
 
         return choix.charAt(0);
     }
-
 
 
 }

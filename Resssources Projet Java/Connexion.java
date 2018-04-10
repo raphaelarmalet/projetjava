@@ -9,8 +9,14 @@
  * Librairies importées
  */
 import java.sql.*;
+import java.io.*;
+
 import java.util.ArrayList;
-import java.awt.*;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+
 
 
 /**
@@ -30,7 +36,9 @@ public class Connexion {
     private ResultSet rset;
     private ResultSetMetaData rsetMeta;
 
-    Statement statement;
+
+
+
 
     /**
      * ArrayList public pour les tables
@@ -59,7 +67,8 @@ public class Connexion {
         Class.forName("com.mysql.jdbc.Driver");
 
         // url de connexion "jdbc:mysql://localhost:3305/usernameECE"
-        String urlDatabase = "jdbc:mysql://localhost/" + nameDatabase;
+
+        String urlDatabase = "jdbc:mysql://127.0.0.1:8889/" + nameDatabase;
 
         //création d'une connexion JDBC à la base 
         conn = DriverManager.getConnection(urlDatabase, loginDatabase, passwordDatabase);
@@ -219,22 +228,97 @@ public class Connexion {
     //Affichage BDD
     public void affichBDD(){
 
+
         try {
-            ResultSet resultat = statement.executeQuery( "SELECT * FROM chambre;" );
+            ResultSet resultat = stmt.executeQuery( "SELECT * FROM chambre;" );
             while ( resultat.next() ) {
 
                 String codeservice = resultat.getString( "code_service" );
-                int no_chambre = resultat.getInt( "no_chambre " );
+                int no_chambre = resultat.getInt( "no_chambre" );
                 int surveillant = resultat.getInt( "surveillant" );
                 int nb_lits = resultat.getInt( "nb_lits" );
 
+
+
                 System.out.println("code_service: "+ codeservice);
+
 
                 /* Traiter ici les valeurs récupérées. */
             }
+
+
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+    }
+    public void PatientMutuelMAAF(){
+
+
+        try {
+            ResultSet resultat = stmt.executeQuery( "SELECT nom, prenom FROM malade WHERE mutuelle='MAAF';" );
+            while ( resultat.next() ) {
+
+                String nom = resultat.getString( "nom" );
+                String prenom = resultat.getString( "prenom" );
+
+
+
+
+                System.out.println("nom: "+ nom);
+                System.out.println("prenom: "+ prenom);
+
+
+
+                /* Traiter ici les valeurs récupérées. */
+            }
+
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void affichDiag(){
+        DefaultPieDataset dataset = new DefaultPieDataset( );
+
+        try {
+            ResultSet resultat = stmt.executeQuery( "SELECT * FROM chambre;" );
+            while ( resultat.next() ) {
+
+
+
+                dataset.setValue(
+                        resultat.getString( "code_service" ) ,
+                        Double.parseDouble( resultat.getString( "no_chambre" )));
+
+
+
+                /* Traiter ici les valeurs récupérées. */
+            }
+
+            JFreeChart chart = ChartFactory.createPieChart(
+                    "Service et chambres",   // chart title
+                    dataset,          // data
+                    true,             // include legend
+                    true,
+                    false );
+
+            int width = 560;    /* Width of the image */
+            int height = 370;   /* Height of the image */
+            File pieChart = new File( "Pie_Chart.jpeg" );
+            ChartUtilities.saveChartAsJPEG( pieChart , chart , width , height );
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
