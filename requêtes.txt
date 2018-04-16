@@ -1,0 +1,145 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf200
+{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;\f1\fnil\fcharset0 HelveticaNeue-Bold;}
+{\colortbl;\red255\green255\blue255;\red53\green53\blue53;}
+{\*\expandedcolortbl;;\cssrgb\c27059\c27059\c27059;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab560
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\fs24 \cf2 Requ\'eates SQL\
+\
+R1 \
+\pard\pardeftab560\sa40\partightenfactor0
+
+\f1\b\fs28 \cf2 // . Pr\'e9nom et nom des malades affili\'e9s \'e0 la mutuelle \'ab MAAF \'bb.\
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\b0\fs24 \cf2 \
+SELECT nom, prenom \
+FROM malade \
+WHERE mutuelle='MAAF\
+\
+R2 \
+\pard\pardeftab560\sa40\partightenfactor0
+
+\f1\b\fs28 \cf2 // Pr\'e9nom et nom des infirmier(\'e8res) travaillant pendant la rotation de nuit\
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\b0\fs24 \cf2 \
+SELECT nom, prenom \
+FROM infirmier \
+WHERE rotation=NUIT\
+\
+R3 \
+\pard\pardeftab560\sa40\partightenfactor0
+
+\f1\b\fs28 \cf2 //Donner pour chaque service, son nom, son b\'e2timent, ainsi que les pr\'e9nom, nom et sp\'e9cialit\'e9 de son directeur. \
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\b0\fs24 \cf2 \
+	SELECT service.nom,\'a0service.batiment,\'a0employe.nom,\'a0employe.prenom,\'a0docteur.specialite\uc0\u8232 	FROM service\u8232 	INNER JOIN employe\'a0ON\'a0service.directeur\'a0=\'a0employe.numero\u8232 	INNER\'a0JOIN\'a0docteur\'a0ON\'a0service.directeur\'a0=\'a0docteur.numero\
+\
+\pard\pardeftab560\sa40\partightenfactor0
+
+\f1\b\fs28 \cf2 R4\
+// Donner pour chaque lit occup\'e9 du b\'e2timent \'ab B \'bb de l\'92h\'f4pital occup\'e9 par un malade, le num\'e9ro du lit, le pr\'e9nom, le nom et la mutuelle du malade l\'92occupant. \
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\b0\fs24 \cf2 \
+	SELECT DISTINCT malade.numero, malade.nom, malade.prenom,malade.mutuelle\
+	FROM service \
+	INNER JOIN chambre ON service.code=chambre.code_service \
+	INNER JOIN malade \
+	WHERE service.batiment='B'\
+\
+\pard\pardeftab560\sa40\partightenfactor0
+
+\f1\b\fs28 \cf2 R5\
+//Les num\'e9ros des m\'e9decins en fonction de la profession rentr\'e9e\
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\b0\fs24 \cf2 String pro;\
+pro=sc.nextLine();\
+\
+\
+SELECT numero\
+FROM docteur \
+WHERE specialite=pro\
+\
+\
+\pard\pardeftab560\sa40\partightenfactor0
+
+\f1\b\fs28 \cf2 R6\
+//Prendre un rendez-vous \
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\b0\fs24 \cf2 //Blinder pour v\'e9rifier la disponibilit\'e9 du m\'e9decin\
+int num_doc;\
+num_doc=sc.nexInt();\
+int num_patient;\
+num_patient=sc.nexInt();\
+int yyyy;\
+yyyy=sc.nexInt();\
+String obj;\
+obj=sc.nextLine();\
+int mm;\
+mm=sc.nexInt();\
+int dd;\
+dd=sc.nexInt();\
+int heure;\
+heure=sc.nexInt();\
+\
+\
+	INSERT INTO rdv\'a0VALUES (num_doc, num_patient, obj, yyyy-mm-dd, heure)\
+\
+\pard\pardeftab560\sa40\partightenfactor0
+
+\f1\b\fs28 \cf2 R7\
+//Modifier l\'92horaire d\'92un rendez-vous\
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\b0\fs24 \cf2 \
+int newheure;\
+newheure=sc.nexInt();\
+int num_patient;\
+num_patient=sc.nexInt();\
+\
+UPTADE rdv\
+SET horaire= newheure\
+WHERE num_malade=num_patient\
+\
+\pard\pardeftab560\sa40\partightenfactor0
+
+\f1\b\fs28 \cf2 R9 \
+//Ajout d\'92un caract\'e8re urgent au malade\
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\b0\fs24 \cf2 \
+UPTADE malade\
+SET level_urg+=1;\
+WHERE numero=num_patient\
+\
+\pard\pardeftab560\sa40\partightenfactor0
+
+\f1\b\fs28 \cf2 R10\
+//V\'e9rification des m\'e9decins disponibles  \
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\b0\fs24 \cf2 \
+SELECT employe.nom\
+FROM soigne\
+INNER JOIN employe\
+WHERE employe.nom != soigne.no_docteur\
+\
+\pard\pardeftab560\sa40\partightenfactor0
+
+\f1\b\fs28 \cf2 R11\
+//V\'e9rification des lits disponibles disponibles\
+\pard\pardeftab560\slleading20\partightenfactor0
+
+\f0\b0\fs24 \cf2 \
+\
+ \
+\
+\
+}
